@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        labelText: title,
+         labelText: title,
       ),
     );
   }
@@ -82,8 +82,14 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Text( style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0), isLogin? 'Login User' : 'Register User'),
             const SizedBox(height: 50),
-            _entityField('Email', _controllerEmail),
-            _entityField('Password', _controllerPassword),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 70 /100,
+                child: _entityField('Email', _controllerEmail)
+            ),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 70 /100,
+                child: _entityField('Password', _controllerPassword),
+            ),
             const SizedBox(height: 20),
             _errorMessage(),
             const SizedBox(height: 50),
