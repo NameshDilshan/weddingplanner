@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weddingplanner/auth.dart';
+import 'package:weddingplanner/pages/client_homepage.dart';
 import 'package:weddingplanner/pages/home_page.dart';
 import 'package:weddingplanner/pages/login_register_page.dart';
 
@@ -17,7 +18,7 @@ class _WidgetTreeState extends State<WidgetTree> {
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return HomePage();
+          return ClientHomePage();
         } else {
           return const LoginPage();
         }
