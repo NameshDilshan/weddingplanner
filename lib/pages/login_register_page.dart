@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'home_page.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -20,6 +22,9 @@ class _LoginPageState extends State<LoginPage> {
 
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey(); //so we can call snackbar from anywhere
   final _formKey = GlobalKey<FormState>();
+  final _loginformformKey = GlobalKey<FormState>();
+
+  // final GlobalKey<FormState> _formKey =  GlobalKey<FormState>();
 
   // final List<String> textFieldsValue = []
   final Map<String, TextEditingController> registerController = {
@@ -28,87 +33,84 @@ class _LoginPageState extends State<LoginPage> {
     'lastname': TextEditingController(),
     'age': TextEditingController(),
     'password': TextEditingController(),
-    'location': TextEditingController(),
     'phoneno': TextEditingController(),
     'email': TextEditingController(),
   };
 
-  // final TextEditingController _controllerEmail = TextEditingController();
-  // final TextEditingController _controllerPassword = TextEditingController();
+  String _selectedLocation = "";
+  String _selectedGender = "";
 
-  Future<String?> signInWithformdata() async {
-    print(registerController['username']?.text);
+  Future<String?> signInWithformdata(String? email, String? password) async {
+    String result = "Error";
     try {
-      final docuser = FirebaseFirestore.instance.collection('users').doc();
-      await docuser.set({
-        'username': registerController['username']?.text,
-        'firstname': registerController['firstname']?.text,
-        'lastname': registerController['lastname']?.text,
-        'age': registerController['age']?.text,
-        'password': registerController['password']?.text,
-        'location': registerController['location']?.text,
-        'phoneno': registerController['phoneno']?.text,
-        'email': registerController['email']?.text,
+
+      if(email == "admin" && password == "admin"){
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const LoginPage()));
+      }
+
+
+      final DocumentReference document = FirebaseFirestore.instance.collection("users").doc(email);
+      await document.get().then<dynamic>((DocumentSnapshot snapshot) async {
+        if (snapshot.get("password").toString() == password) {
+          result = 'success';
+        } else {
+          result = 'Invalid Password';
+        }
       });
-      return 'success';
     } catch (e) {
       setState(() {
         errorMessage = e.toString();
       });
-      return e.toString();
+      if(e.toString() == "Bad state: cannot get a field on a DocumentSnapshotPlatform which does not exist"){
+        result = "Username is Invalid. Please try again !";
+      }else{
+        result = e.toString();
+      }
     }
-
-    // try {
-    //   controller: registerController['email'],
-    //   // await Auth().signInWithEmailAndPassword(email: _controllerEmail.text, password: _controllerPassword.text);
-    // } on FirebaseAuthException catch (e) {
-    //   setState(() {
-    //     errorMessage = e.message;
-    //   });
-    // }
+    return result;
   }
 
   Widget loginWidget() {
-    return Column(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 70 / 100,
-          child: TextFormField(
-            controller: registerController['email'],
-            decoration: const InputDecoration(
-              hintText: 'Email',
+    return Form(
+        key: _loginformformKey,
+        child: Column(children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 70 / 100,
+            child: TextFormField(
+              controller: registerController['email'],
+              decoration: const InputDecoration(
+                hintText: 'Email',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some Email';
+                }
+                return null;
+              },
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter Email';
-              }
-              return null;
-            },
           ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 70 / 100,
-          child: TextFormField(
-            controller: registerController['password'],
-            decoration: const InputDecoration(
-              hintText: 'Password',
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 70 / 100,
+            child: TextFormField(
+              controller: registerController['password'],
+              decoration: const InputDecoration(
+                hintText: 'Passowrd',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter Valid Password';
+                }
+                return null;
+              },
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter Password';
-              }
-              return null;
-            },
           ),
-        ),
-      ],
-    );
+        ]));
   }
 
   Widget registerWidget() {
-    List<String> _locations = ['A', 'B', 'C', 'D']; // Option 2
-    String? _selectedLocation = ""; // Option 2
     String? dropDownValue;
+    String? dropDownValueGender;
 
     return Form(
       key: _formKey,
@@ -207,54 +209,144 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 70 / 100,
-            child: TextFormField(
-              controller: registerController['gender'],
-              decoration: const InputDecoration(
-                hintText: 'Gender',
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter Gender';
-                }
-                return null;
+            child: DropdownButton(
+              hint: dropDownValueGender == null
+                  ? const Text('Gender')
+                  : Text(
+                      dropDownValueGender,
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+              isExpanded: true,
+              iconSize: 30.0,
+              style: const TextStyle(color: Colors.blue),
+              items: ['Male ', 'Female'].map(
+                (val) {
+                  return DropdownMenuItem<String>(
+                    value: val,
+                    child: Text(val),
+                  );
+                },
+              ).toList(),
+              onChanged: (val) {
+                setState(
+                  () {
+                    dropDownValueGender = val;
+                    _selectedGender = val!;
+                  },
+                );
               },
             ),
           ),
           SizedBox(
-              width: MediaQuery.of(context).size.width * 70 / 100,
-              child: DropdownButton(
-                hint: dropDownValue == null ? const Text('Dropdown') : Text(dropDownValue, style: const TextStyle(color: Colors.blue),
-                ),
-                isExpanded: true,
-                iconSize: 30.0,
-                style: const TextStyle(color: Colors.blue),
-                items: ['One', 'Two', 'Three'].map((val) {
-                    return DropdownMenuItem<String>(
-                      value: val,
-                      child: Text(val),
-                    );
-                  },
-                ).toList(),
-                onChanged: (val) {
-                  setState(() {
-                      dropDownValue = val;
-                    },
+            width: MediaQuery.of(context).size.width * 70 / 100,
+            child: DropdownButton(
+              hint: dropDownValue == null
+                  ? const Text('Location')
+                  : Text(
+                      dropDownValue,
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+              isExpanded: true,
+              iconSize: 30.0,
+              style: const TextStyle(color: Colors.blue),
+              items: [
+                'Bath ',
+                'Birmingham ',
+                'Bradford ',
+                'Brighton & Hove ',
+                'Bristol ',
+                'Cambridge ',
+                'Canterbury ',
+                'Carlisle ',
+                'Chelmsford ',
+                'Chester ',
+                'Chichester ',
+                'Colchester ',
+                'Coventry ',
+                'Derby ',
+                'Doncaster ',
+                'Durham ',
+                'Ely ',
+                'Exeter ',
+                'Gloucester ',
+                'Hereford ',
+                'Kingston-upon-Hull ',
+                'Lancaster ',
+                'Leeds ',
+                'Leicester ',
+                'Lichfield ',
+                'Lincoln ',
+                'Liverpool ',
+                'London ',
+                'Manchester ',
+                'Milton Keynes ',
+                'Newcastle-upon-Tyne ',
+                'Norwich ',
+                'Nottingham ',
+                'Oxford ',
+                'Peterborough ',
+                'Plymouth ',
+                'Portsmouth ',
+                'Preston ',
+                'Ripon ',
+                'Salford ',
+                'Salisbury ',
+                'Sheffield ',
+                'Southampton ',
+                'Southend-on-Sea ',
+                'St Albans ',
+                'Stoke on Trent ',
+                'Sunderland ',
+                'Truro ',
+                'Wakefield ',
+                'Wells ',
+                'Westminster ',
+                'Winchester ',
+                'Wolverhampton ',
+                'Worcester ',
+                'York ',
+                'Northern Ireland ',
+                'Armagh* ',
+                'Bangor ',
+                'Belfast ',
+                'Lisburn ',
+                'Londonderry ',
+                'Newry ',
+                'Scotland ',
+                'Aberdeen* ',
+                'Dundee* ',
+                'Dunfermline ',
+                'Edinburgh* ',
+                'Glasgow* ',
+                'Inverness ',
+                'Perth ',
+                'Stirling ',
+                'Wales ',
+                'Bangor ',
+                'Cardiff* ',
+                'Newport ',
+                'St Asaph ',
+                'St Davids ',
+                'Swansea ',
+                'Wrexham'
+              ].map(
+                (val) {
+                  return DropdownMenuItem<String>(
+                    value: val,
+                    child: Text(val),
                   );
                 },
-              ),
-              // TextFormField(
-              //   controller: registerController['location'],
-              //   decoration: const InputDecoration(
-              //     hintText: 'Location',
-              //   ),
-              //   validator: (value) {
-              //     if (value == null || value.isEmpty) {
-              //       return 'Please enter Location';
-              //     }
-              //     return null;
-              //   },
-              // ),
-              ),
+              ).toList(),
+              onChanged: (val) {
+                setState(
+                  () {
+                    dropDownValue = val;
+                    _selectedLocation = val!;
+                  },
+                );
+              },
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 70 / 100,
             child: TextFormField(
@@ -282,9 +374,28 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
       onPressed: () {
-        if (_formKey.currentState != null) {
-          if (_formKey.currentState!.validate()) {
-            isLogin ? signInWithformdata() : createUserWithformdata();
+        if (isLogin) {
+          if (_loginformformKey.currentState != null) {
+            if (_loginformformKey.currentState!.validate()) {
+              String? email = registerController['email']?.text ?? "";
+              String? password = registerController['password']?.text ?? "";
+              signInWithformdata(email, password).then((value) =>
+                  value == 'success'
+                      ? Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => const HomePage()))
+                      : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(value!),
+                        )));
+            }
+          }
+        } else {
+          if (_formKey.currentState != null) {
+            if (_formKey.currentState!.validate()) {
+              createUserWithformdata().then((value) => value == 'success'
+                  ? Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const HomePage()))
+                  : null);
+            }
           }
         }
       },
@@ -315,9 +426,9 @@ class _LoginPageState extends State<LoginPage> {
         'firstname': registerController['firstname']?.text,
         'lastname': registerController['lastname']?.text,
         'age': registerController['age']?.text,
-        'location': registerController['location']?.text,
+        'location': _selectedLocation,
         'phoneno': registerController['phoneno']?.text,
-        'gender': registerController['gender']?.text,
+        'gender': _selectedGender,
       });
       return 'success';
     } catch (e) {

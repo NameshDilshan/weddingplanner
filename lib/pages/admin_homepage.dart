@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'login_register_page.dart';
 
-class ClientHomePage extends StatefulWidget {
-  const ClientHomePage({Key? key}) : super(key: key);
+class AdminHomePage extends StatefulWidget {
+  const AdminHomePage({Key? key}) : super(key: key);
 
   @override
-  State<ClientHomePage> createState() => _ClientHomePageState();
+  State<AdminHomePage> createState() => _AdminHomePageState();
 }
 
-class _ClientHomePageState extends State<ClientHomePage> {
+class _AdminHomePageState extends State<AdminHomePage> {
   Widget _signOutButton() {
     return ElevatedButton(
         onPressed: () => Navigator.of(context).pushReplacement(
