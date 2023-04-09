@@ -6,8 +6,8 @@ import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:weddingplanner/pages/client_homepage.dart';
 
-import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -43,13 +43,10 @@ class _LoginPageState extends State<LoginPage> {
   Future<String?> signInWithformdata(String? email, String? password) async {
     String result = "Error";
     try {
-
       if(email == "admin" && password == "admin"){
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginPage()));
       }
-
-
       final DocumentReference document = FirebaseFirestore.instance.collection("users").doc(email);
       await document.get().then<dynamic>((DocumentSnapshot snapshot) async {
         if (snapshot.get("password").toString() == password) {
@@ -210,12 +207,7 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 70 / 100,
             child: DropdownButton(
-              hint: dropDownValueGender == null
-                  ? const Text('Gender')
-                  : Text(
-                      dropDownValueGender,
-                      style: const TextStyle(color: Colors.blue),
-                    ),
+              hint: Text(_selectedGender),
               isExpanded: true,
               iconSize: 30.0,
               style: const TextStyle(color: Colors.blue),
@@ -240,12 +232,7 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 70 / 100,
             child: DropdownButton(
-              hint: dropDownValue == null
-                  ? const Text('Location')
-                  : Text(
-                      dropDownValue,
-                      style: const TextStyle(color: Colors.blue),
-                    ),
+              hint: Text(_selectedLocation),
               isExpanded: true,
               iconSize: 30.0,
               style: const TextStyle(color: Colors.blue),
@@ -382,7 +369,7 @@ class _LoginPageState extends State<LoginPage> {
               signInWithformdata(email, password).then((value) =>
                   value == 'success'
                       ? Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => const HomePage()))
+                          MaterialPageRoute(builder: (context) => ClientHomePage(email: email)))
                       : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(value!),
                         )));
@@ -391,9 +378,10 @@ class _LoginPageState extends State<LoginPage> {
         } else {
           if (_formKey.currentState != null) {
             if (_formKey.currentState!.validate()) {
+              String? email = registerController['email']?.text ?? "";
               createUserWithformdata().then((value) => value == 'success'
                   ? Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const HomePage()))
+                      MaterialPageRoute(builder: (context) => const ClientHomePage( email: 'email',)))
                   : null);
             }
           }
