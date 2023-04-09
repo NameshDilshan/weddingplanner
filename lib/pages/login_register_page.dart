@@ -1,13 +1,8 @@
 import 'dart:core';
-import 'dart:core';
-import 'dart:core';
-import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:weddingplanner/pages/client_homepage.dart';
-
+import 'package:weddingplanner/pages/client.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -43,11 +38,12 @@ class _LoginPageState extends State<LoginPage> {
   Future<String?> signInWithformdata(String? email, String? password) async {
     String result = "Error";
     try {
-      if(email == "admin" && password == "admin"){
+      if (email == "admin" && password == "admin") {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginPage()));
       }
-      final DocumentReference document = FirebaseFirestore.instance.collection("users").doc(email);
+      final DocumentReference document =
+          FirebaseFirestore.instance.collection("users").doc(email);
       await document.get().then<dynamic>((DocumentSnapshot snapshot) async {
         if (snapshot.get("password").toString() == password) {
           result = 'success';
@@ -59,9 +55,10 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         errorMessage = e.toString();
       });
-      if(e.toString() == "Bad state: cannot get a field on a DocumentSnapshotPlatform which does not exist"){
+      if (e.toString() ==
+          "Bad state: cannot get a field on a DocumentSnapshotPlatform which does not exist") {
         result = "Username is Invalid. Please try again !";
-      }else{
+      } else {
         result = e.toString();
       }
     }
@@ -106,8 +103,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget registerWidget() {
-    String? dropDownValue;
-    String? dropDownValueGender;
 
     return Form(
       key: _formKey,
@@ -222,7 +217,6 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (val) {
                 setState(
                   () {
-                    dropDownValueGender = val;
                     _selectedGender = val!;
                   },
                 );
@@ -327,7 +321,6 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (val) {
                 setState(
                   () {
-                    dropDownValue = val;
                     _selectedLocation = val!;
                   },
                 );
@@ -368,8 +361,8 @@ class _LoginPageState extends State<LoginPage> {
               String? password = registerController['password']?.text ?? "";
               signInWithformdata(email, password).then((value) =>
                   value == 'success'
-                      ? Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => ClientHomePage(email: email)))
+                      ? Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => Client(email: email)))
                       : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(value!),
                         )));
@@ -380,8 +373,10 @@ class _LoginPageState extends State<LoginPage> {
             if (_formKey.currentState!.validate()) {
               String? email = registerController['email']?.text ?? "";
               createUserWithformdata().then((value) => value == 'success'
-                  ? Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const ClientHomePage( email: 'email',)))
+                  ? Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => Client(
+                            email: email,
+                          )))
                   : null);
             }
           }
