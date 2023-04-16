@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:weddingplanner/pages/admin.dart';
 import 'package:weddingplanner/pages/client.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,13 +16,9 @@ class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
 
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey(); //so we can call snackbar from anywhere
   final _formKey = GlobalKey<FormState>();
   final _loginformformKey = GlobalKey<FormState>();
 
-  // final GlobalKey<FormState> _formKey =  GlobalKey<FormState>();
-
-  // final List<String> textFieldsValue = []
   final Map<String, TextEditingController> registerController = {
     'username': TextEditingController(),
     'firstname': TextEditingController(),
@@ -40,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       if (email == "admin" && password == "admin") {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const LoginPage()));
+            MaterialPageRoute(builder: (context) => const Admin()));
       }
       final DocumentReference document =
           FirebaseFirestore.instance.collection("users").doc(email);
@@ -89,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
             child: TextFormField(
               controller: registerController['password'],
               decoration: const InputDecoration(
-                hintText: 'Passowrd',
+                hintText: 'Password',
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -103,7 +100,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget registerWidget() {
-
     return Form(
       key: _formKey,
       child: Column(
@@ -354,6 +350,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
       onPressed: () {
+        // _asyncGetOnloadData();
         if (isLogin) {
           if (_loginformformKey.currentState != null) {
             if (_loginformformKey.currentState!.validate()) {

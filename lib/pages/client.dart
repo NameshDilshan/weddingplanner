@@ -28,8 +28,18 @@ class _ClientState extends State<Client> {
   String _selectedHoneymoonValue = "";
   String _selectedWeddingCardValue = "";
   String _selectedWeddingCarValue = "";
+  var venueList = [];
+  var caterersList = [];
+  var stylistsList = [];
+  var weddingDressList = [];
+  var liquorList = [];
+  var photographyList = [];
+  var honeyMoonList = [];
+  var weddingCardsList = [];
+  var weddingCarsList = [];
+  late DocumentSnapshot<Map<String, dynamic>> userData;
 
-  final Map<String, TextEditingController> registerController = {
+  Map<String, TextEditingController> registerController = {
     'guestCount': TextEditingController(),
     'venue': TextEditingController(),
   };
@@ -192,6 +202,125 @@ class _ClientState extends State<Client> {
   bool onLastPage = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.email)
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        userData = snapshot;
+        var date = userData.get('weddingdate').toDate();
+        selectedDate = date;
+        _selectedVenue = userData.get('venue');
+        _selectedCatererValue = userData.get('caterer');
+        _selectedStylistValue = userData.get('stylist');
+        _selectedWeddingDressValue = userData.get('weddingDress');
+        _selectedLiquorValue = userData.get('liquor');
+        _selectedPhotographyValue = userData.get('photography');
+        _selectedHoneymoonValue = userData.get('honeymoon');
+        _selectedWeddingCardValue = userData.get('weddingcard');
+        _selectedWeddingCarValue = userData.get('weddingcar');
+        registerController['guestCount'] =
+            TextEditingController(text: userData.get('guestCount'));
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('venues')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          venueList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('caterers')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          caterersList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('stylists')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          stylistsList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('liquors')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          liquorList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('weddingDresses')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          weddingDressList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('photography')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          photographyList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('honeyMoons')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          honeyMoonList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('weddingCards')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          weddingCardsList.add(element.data()['name']);
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('weddingCars')
+        .snapshots()
+        .listen((snapshot) {
+      for (var element in snapshot.docs) {
+        setState(() {
+          weddingCarsList.add(element.data()['name']);
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -203,9 +332,10 @@ class _ClientState extends State<Client> {
               Align(
                 alignment: Alignment.topRight,
                 child: GestureDetector(
-                  child: const Icon( Icons.logout ),
+                  child: const Icon(Icons.logout),
                   onTap: () => {
-                    Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => const LoginPage()))
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const LoginPage()))
                   },
                 ),
               )
@@ -278,8 +408,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items:
-                            ['Bath ', 'St Davids ', 'Swansea ', 'Wrexham'].map(
+                        items: venueList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -317,7 +446,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: ['cat1 ', 'St vat2 ', 'cat3 ', 'Wrexham'].map(
+                        items: caterersList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -355,7 +484,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: ['style1 ', 'style2', 'style3'].map(
+                        items: stylistsList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -393,12 +522,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: [
-                          'Wed dress1',
-                          'Wed dress2',
-                          'Wed dress3',
-                          'Wed dress4'
-                        ].map(
+                        items: weddingDressList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -436,7 +560,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: ['Liq1', 'Liq2', 'Liq3', 'Liq4'].map(
+                        items: liquorList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -474,7 +598,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: ['photo1 ', 'photo2', 'photo3', '4'].map(
+                        items: photographyList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -512,7 +636,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: ['honey1', 'honey2', 'honey3', 'honey4'].map(
+                        items: honeyMoonList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -550,7 +674,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: ['Card1', 'Card2', 'Card3', 'Card4'].map(
+                        items: weddingCardsList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -588,7 +712,7 @@ class _ClientState extends State<Client> {
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
-                        items: ['Car1', 'Car2', 'Car3', 'Car4'].map(
+                        items: weddingCarsList.map(
                           (val) {
                             return DropdownMenuItem<String>(
                               value: val,
@@ -616,32 +740,33 @@ class _ClientState extends State<Client> {
             ],
           ),
           Container(
-              alignment: const Alignment(0, 0.75),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                      onTap: () => {_controller.jumpToPage(10)},
-                      child: const Text('Skip')),
-                  SmoothPageIndicator(controller: _controller, count: 11),
-                  onLastPage
-                      ? GestureDetector(
-                          onTap: () => {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const ClientDashboard();
-                                }))
-                              },
-                          child: const Text('Done'))
-                      : GestureDetector(
-                          onTap: () => {
-                                _controller.nextPage(
-                                    duration: const Duration(milliseconds: 500),
-                                    curve: Curves.easeOut)
-                              },
-                          child: const Text('Next')),
-                ],
-              ))
+            alignment: const Alignment(0, 0.75),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                    onTap: () => {_controller.jumpToPage(10)},
+                    child: const Text('Skip')),
+                SmoothPageIndicator(controller: _controller, count: 11),
+                onLastPage
+                    ? GestureDetector(
+                        onTap: () => {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const ClientDashboard();
+                              }))
+                            },
+                        child: const Text('Done'))
+                    : GestureDetector(
+                        onTap: () => {
+                              _controller.nextPage(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeOut)
+                            },
+                        child: const Text('Next')),
+              ],
+            ),
+          ),
         ],
       ),
     );
