@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:weddingplanner/pages/admin.dart';
+import 'package:weddingplanner/pages/client.dart';
+import 'package:weddingplanner/pages/client_dashboard.dart';
 import 'package:weddingplanner/pages/login_register_page.dart';
 
 class WidgetTree extends StatefulWidget {
@@ -11,7 +14,9 @@ class WidgetTree extends StatefulWidget {
 class _WidgetTreeState extends State<WidgetTree> {
   @override
   Widget build(BuildContext context) {
-    return const LoginPage();
+    return const Admin();
+      // const Client(email: 'nameshd');
+      // const LoginPage();
 
     // StreamBuilder(
     // stream: Auth().authStateChanges,
