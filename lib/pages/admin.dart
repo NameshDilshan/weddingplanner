@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weddingplanner/pages/my_drawer.dart';
 
 import 'adminpages/caterer_page.dart';
 
@@ -15,37 +16,7 @@ Widget adminDrawer(context){
     body: const Center(
       child: Text('My Page!'),
     ),
-    drawer: Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.deepOrange,
-            ),
-            child: Text('Admin Menu',
-                style: TextStyle(
-                  fontSize: 30,
-                )),
-          ),
-          ListTile(
-            leading: const Icon(Icons.fastfood),
-            title: const Text('Caterers'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => const CatererPage()));
-            },
-          ),
-          ListTile(
-            title: const Text('Item 2'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    ),
+    drawer: const MyDrawer(),
   );
 }
 
