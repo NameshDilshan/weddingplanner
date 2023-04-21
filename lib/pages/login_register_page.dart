@@ -2,8 +2,8 @@ import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:weddingplanner/pages/admin.dart';
-import 'package:weddingplanner/pages/client.dart';
+import 'package:weddingplanner/pages/adminpages/admin.dart';
+import 'package:weddingplanner/pages/client/client.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

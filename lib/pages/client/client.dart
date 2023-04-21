@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:weddingplanner/pages/client_dashboard.dart';
+import 'package:weddingplanner/pages/client/client_dashboard.dart';
 
-import 'login_register_page.dart';
+import '../login_register_page.dart';
 
 class Client extends StatefulWidget {
   final String email;

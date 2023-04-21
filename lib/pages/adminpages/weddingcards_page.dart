@@ -2,19 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:weddingplanner/pages/my_drawer.dart';
 
-class CatererPage extends StatefulWidget {
-  const CatererPage({Key? key}) : super(key: key);
+class WeddingCardsPage extends StatefulWidget {
+  const WeddingCardsPage({Key? key}) : super(key: key);
 
   @override
-  State<CatererPage> createState() => _CatererPageState();
+  State<WeddingCardsPage> createState() => _WeddingCardsPageState();
 }
 
-class _CatererPageState extends State<CatererPage> {
+class _WeddingCardsPageState extends State<WeddingCardsPage> {
   var loopVar = [];
   var itemList = [];
   TextEditingController textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  var collectionName = 'caterers';
+  var collectionName = 'weddingCards';
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _CatererPageState extends State<CatererPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Caterer Menu", textAlign: TextAlign.center),
+        title: const Text("Wedding Cards Menu", textAlign: TextAlign.center),
       ),
       drawer: const MyDrawer(),
       body: ListView(
@@ -72,7 +72,7 @@ class _CatererPageState extends State<CatererPage> {
                   textAlign: TextAlign.center,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Caterer Name',
+                    labelText: 'Wedding Card Name',
                   ),
                   validator: (value) {
                     return value == null || value.trim().isEmpty
@@ -111,7 +111,7 @@ class _CatererPageState extends State<CatererPage> {
                             }).then((value) => Navigator.of(context)
                                     .pushReplacement(MaterialPageRoute(
                                         builder: (context) =>
-                                            const CatererPage())));
+                                            const WeddingCardsPage())));
                           },
                           icon: const Icon(Icons.delete)),
                     ),
@@ -129,7 +129,7 @@ class _CatererPageState extends State<CatererPage> {
         FirebaseFirestore.instance.collection(collectionName).doc().set({
           'name': textController.text
         }).then((value) => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const CatererPage())));
+            MaterialPageRoute(builder: (context) => const WeddingCardsPage())));
       }
     }
   }
