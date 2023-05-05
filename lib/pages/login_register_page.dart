@@ -198,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 70 / 100,
             child: DropdownButton(
-              hint: Text(_selectedGender),
+              hint: _selectedGender.isEmpty ? const Text("Please select Gender") : Text(_selectedGender),
               isExpanded: true,
               iconSize: 30.0,
               style: const TextStyle(color: Colors.blue),
@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 70 / 100,
             child: DropdownButton(
-              hint: Text(_selectedLocation),
+              hint: _selectedLocation.isEmpty ? const Text("Please select Location") : Text(_selectedLocation),
               isExpanded: true,
               iconSize: 30.0,
               style: const TextStyle(color: Colors.blue),

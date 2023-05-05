@@ -404,7 +404,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedVenue),
+                        hint: _selectedVenue.isEmpty ? const Text("Please select Venue") : Text(_selectedVenue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -442,7 +442,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedCatererValue),
+                        hint: _selectedCatererValue.isEmpty ? const Text("Please select Caterer") : Text(_selectedCatererValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -480,7 +480,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedStylistValue),
+                        hint: _selectedStylistValue.isEmpty ? const Text("Please select Stylist") : Text(_selectedStylistValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -518,7 +518,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedWeddingDressValue),
+                        hint: _selectedWeddingDressValue.isEmpty ? const Text("Please select a Wedding Dress") : Text(_selectedWeddingDressValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -556,7 +556,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedLiquorValue),
+                        hint: _selectedLiquorValue.isEmpty ? const Text("Please select Liquor Type") : Text(_selectedLiquorValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -594,7 +594,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedPhotographyValue),
+                        hint: _selectedPhotographyValue.isEmpty ? const Text("Please select a Photographer") : Text(_selectedPhotographyValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -632,7 +632,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedHoneymoonValue),
+                        hint: _selectedHoneymoonValue.isEmpty ? const Text("Please select a Honeymoon Suite") : Text(_selectedHoneymoonValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -670,7 +670,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedWeddingCardValue),
+                        hint: _selectedWeddingCardValue.isEmpty ? const Text("Please select a WeddingCard") : Text(_selectedWeddingCardValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),
@@ -708,7 +708,7 @@ class _ClientState extends State<Client> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 70 / 100,
                       child: DropdownButton(
-                        hint: Text(_selectedWeddingCarValue),
+                        hint: _selectedWeddingCarValue.isEmpty ? const Text("Please select a WeddingCar") : Text(_selectedWeddingCarValue),
                         isExpanded: true,
                         iconSize: 30.0,
                         style: const TextStyle(color: Colors.blue),

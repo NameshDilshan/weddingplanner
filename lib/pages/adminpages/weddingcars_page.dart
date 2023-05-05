@@ -11,8 +11,10 @@ class WeddingCarsPage extends StatefulWidget {
 
 class _WeddingCarsPageState extends State<WeddingCarsPage> {
   var loopVar = [];
-  var itemList = [];
+  var nameItemList = [];
+  var descItemList = [];
   TextEditingController textController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   var collectionName = 'weddingCars';
 
@@ -25,7 +27,8 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
         .listen((snapshot) {
       for (var element in snapshot.docs) {
         setState(() {
-          itemList.add(element.data()['name']);
+          nameItemList.add(element.data()['name']);
+          descItemList.add(element.data()['description']);
         });
       }
     });
@@ -61,27 +64,64 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
           const SizedBox(
             height: 20.0,
           ),
-          Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              height: MediaQuery.of(context).size.height * 0.05,
-              child: Form(
-                key: _formKey,
+          // Center(
+          //   child: SizedBox(
+          //     width: MediaQuery.of(context).size.width * 0.5,
+          //     height: MediaQuery.of(context).size.height * 0.05,
+          //     child: Form(
+          //       key: _formKey,
+          //       child: TextFormField(
+          //         controller: textController,
+          //         textAlign: TextAlign.center,
+          //         decoration: const InputDecoration(
+          //           border: UnderlineInputBorder(),
+          //           labelText: 'Wedding Car Model',
+          //         ),
+          //         validator: (value) {
+          //           return value == null || value.trim().isEmpty
+          //               ? 'Please enter a Text to save'
+          //               : null;
+          //         },
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          Form(
+            key: _formKey,
+            child: Column(children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 80 / 100,
                 child: TextFormField(
                   controller: textController,
-                  textAlign: TextAlign.center,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Wedding Car Model',
+                    labelText: 'Caterer Name',
                   ),
                   validator: (value) {
-                    return value == null || value.trim().isEmpty
-                        ? 'Please enter a Text to save'
-                        : null;
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Caterer Name';
+                    }
+                    return null;
                   },
                 ),
               ),
-            ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 80 / 100,
+                child: TextFormField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Caterer Description',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Description';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ]),
           ),
           const SizedBox(
             height: 40.0,
@@ -89,19 +129,19 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
           ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: itemList.length,
+              itemCount: nameItemList.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
                   child: Card(
                     elevation: 5,
                     child: ListTile(
-                      title: Text(itemList[index]),
+                      title: Text(nameItemList[index]),
                       trailing: IconButton(
                           onPressed: () {
                             FirebaseFirestore.instance
                                 .collection(collectionName)
-                                .where('name', isEqualTo: itemList[index])
+                                .where('name', isEqualTo: nameItemList[index])
                                 .get()
                                 .asStream()
                                 .forEach((element) {
@@ -127,7 +167,8 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         FirebaseFirestore.instance.collection(collectionName).doc().set({
-          'name': textController.text
+          'name': textController.text,
+          'description': descriptionController.text
         }).then((value) => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const WeddingCarsPage())));
       }
