@@ -753,7 +753,7 @@ class _ClientState extends State<Client> {
                         onTap: () => {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return const ClientDashboard();
+                                    return ClientDashboard(email: widget.email);
                               }))
                             },
                         child: const Text('Done'))

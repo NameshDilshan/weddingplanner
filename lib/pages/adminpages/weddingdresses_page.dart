@@ -95,11 +95,11 @@ class _WeddingDressesPageState extends State<WeddingDressesPage> {
                   controller: textController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Caterer Name',
+                    labelText: 'Wedding Dress Name',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter Caterer Name';
+                      return 'Please enter Wedding Dress Name';
                     }
                     return null;
                   },
@@ -111,7 +111,7 @@ class _WeddingDressesPageState extends State<WeddingDressesPage> {
                   controller: descriptionController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Caterer Description',
+                    labelText: 'Wedding Dress Description',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -137,6 +137,7 @@ class _WeddingDressesPageState extends State<WeddingDressesPage> {
                     elevation: 5,
                     child: ListTile(
                       title: Text(nameItemList[index]),
+                      subtitle: Text(descItemList[index]),
                       trailing: IconButton(
                           onPressed: () {
                             FirebaseFirestore.instance

@@ -95,11 +95,11 @@ class _LiquorPageState extends State<LiquorPage> {
                   controller: textController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Caterer Name',
+                    labelText: 'Liquor Name',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter Caterer Name';
+                      return 'Please enter Liquor Name';
                     }
                     return null;
                   },
@@ -111,7 +111,7 @@ class _LiquorPageState extends State<LiquorPage> {
                   controller: descriptionController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Caterer Description',
+                    labelText: 'Liquor Description',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -137,6 +137,7 @@ class _LiquorPageState extends State<LiquorPage> {
                     elevation: 5,
                     child: ListTile(
                       title: Text(nameItemList[index]),
+                      subtitle: Text(descItemList[index]),
                       trailing: IconButton(
                           onPressed: () {
                             FirebaseFirestore.instance

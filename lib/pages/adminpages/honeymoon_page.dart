@@ -95,11 +95,11 @@ class _HoneymoonPageState extends State<HoneymoonPage> {
                   controller: textController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Caterer Name',
+                    labelText: 'Honeymoon suite Name',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter Caterer Name';
+                      return 'Please enter Honeymoon suite Name';
                     }
                     return null;
                   },
@@ -111,7 +111,7 @@ class _HoneymoonPageState extends State<HoneymoonPage> {
                   controller: descriptionController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Caterer Description',
+                    labelText: 'Honeymoon suite Description',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -137,6 +137,7 @@ class _HoneymoonPageState extends State<HoneymoonPage> {
                     elevation: 5,
                     child: ListTile(
                       title: Text(nameItemList[index]),
+                      subtitle: Text(descItemList[index]),
                       trailing: IconButton(
                           onPressed: () {
                             FirebaseFirestore.instance

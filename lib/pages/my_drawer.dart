@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weddingplanner/pages/adminpages/photography_page.dart';
 import 'package:weddingplanner/pages/adminpages/stylists_page.dart';
+import 'package:weddingplanner/pages/adminpages/venue_page.dart';
 import 'package:weddingplanner/pages/adminpages/weddingcards_page.dart';
 import 'package:weddingplanner/pages/adminpages/weddingdresses_page.dart';
 
@@ -20,7 +21,7 @@ class MyDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.deepOrange,
+              color: Colors.lightBlueAccent,
             ),
             child: Text('Admin Menu',
                 style: TextStyle(
@@ -41,6 +42,15 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => const HoneymoonPage()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.location_on),
+            title: const Text('Venue'),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                  const VenuePage()));
             },
           ),
           ListTile(

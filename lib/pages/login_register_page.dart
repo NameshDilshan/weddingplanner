@@ -35,14 +35,14 @@ class _LoginPageState extends State<LoginPage> {
   Future<String?> signInWithformdata(String? email, String? password) async {
     String result = "Error";
     try {
-      if (email == "admin" && password == "admin") {
+      if (email?.trim() == "admin" && password?.trim() == "admin") {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const Admin()));
       }
       final DocumentReference document =
-          FirebaseFirestore.instance.collection("users").doc(email);
+          FirebaseFirestore.instance.collection("users").doc(email?.trim());
       await document.get().then<dynamic>((DocumentSnapshot snapshot) async {
-        if (snapshot.get("password").toString() == password) {
+        if (snapshot.get("password").toString() == password?.trim()) {
           result = 'success';
         } else {
           result = 'Invalid Password';

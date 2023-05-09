@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:weddingplanner/pages/my_drawer.dart';
 
-class WeddingCarsPage extends StatefulWidget {
-  const WeddingCarsPage({Key? key}) : super(key: key);
+class VenuePage extends StatefulWidget {
+  const VenuePage({Key? key}) : super(key: key);
 
   @override
-  State<WeddingCarsPage> createState() => _WeddingCarsPageState();
+  State<VenuePage> createState() => _VenuePageState();
 }
 
-class _WeddingCarsPageState extends State<WeddingCarsPage> {
+class _VenuePageState extends State<VenuePage> {
   var loopVar = [];
   var nameItemList = [];
   var descItemList = [];
   TextEditingController textController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  var collectionName = 'weddingCars';
+  var collectionName = 'venues';
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Wedding Cars Menu", textAlign: TextAlign.center),
+        title: const Text("Venue Menu", textAlign: TextAlign.center),
       ),
       drawer: const MyDrawer(),
       body: ListView(
@@ -75,7 +75,7 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
           //         textAlign: TextAlign.center,
           //         decoration: const InputDecoration(
           //           border: UnderlineInputBorder(),
-          //           labelText: 'Wedding Car Model',
+          //           labelText: 'Venue Hotel Name',
           //         ),
           //         validator: (value) {
           //           return value == null || value.trim().isEmpty
@@ -95,11 +95,11 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
                   controller: textController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Wedding Car Name',
+                    labelText: 'Venue Name',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter Wedding Car Name';
+                      return 'Please enter Venue Name';
                     }
                     return null;
                   },
@@ -111,7 +111,7 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
                   controller: descriptionController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Wedding Car Description',
+                    labelText: 'Venue Description',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -152,7 +152,7 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
                             }).then((value) => Navigator.of(context)
                                     .pushReplacement(MaterialPageRoute(
                                         builder: (context) =>
-                                            const WeddingCarsPage())));
+                                            const VenuePage())));
                           },
                           icon: const Icon(Icons.delete)),
                     ),
@@ -171,7 +171,7 @@ class _WeddingCarsPageState extends State<WeddingCarsPage> {
           'name': textController.text,
           'description': descriptionController.text
         }).then((value) => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const WeddingCarsPage())));
+            MaterialPageRoute(builder: (context) => const VenuePage())));
       }
     }
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weddingplanner/pages/client/client_dashboard.dart';
 import 'package:weddingplanner/pages/login_register_page.dart';
 
 class WidgetTree extends StatefulWidget {
